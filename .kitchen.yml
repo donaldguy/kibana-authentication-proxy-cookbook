@@ -1,9 +1,11 @@
 ---
 driver:
-  name: vagrant
+  name: docker
+driver_config:
+    socket: tcp://192.168.59.103:2375
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
   - name: ubuntu-14.04

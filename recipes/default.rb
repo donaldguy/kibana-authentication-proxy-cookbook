@@ -23,41 +23,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
+include_recipe 'kibana-authentication-proxy::user'
+include_recipe 'kibana-authentication-proxy::repo'
+include_recipe 'kibana-authentication-proxy::config'
+include_recipe 'kibana-authentication-proxy::service'
 
-include_recipe 'chef-sugar'
-
-compile_time do
-  include_recipe 'git' unless installed?('git')
-  include_recipe 'nodejs::npm' unless installed?('npm')
-end
-
-git node[:kibana_authentication_proxy][:install_path] do
-  repository "https://github.com/fangli/kibana-authentication-proxy.git"
-  enable_submodules true
-  revision node[:kibana_authentication_proxy][:git_ref]
-
-  notifies :install, "nodejs_npm[kibana-authentication-proxy]", :immediately
-end
-
-if node[:kibana_authentication_proxy][:kibana_git_ref]
-  git "#{node[:kibana_authentication_proxy][:install_path]}/kibana" do
-    revision node[:kibana_authentication_proxy][:kibana_git_ref]
-    repository "https://github.com/elasticsearch/kibana.git"
-  end
-end
-
-nodejs_npm 'kibana-authentication-proxy' do
-  path node[:kibana_authentication_proxy][:install_path]
-  json true
-  action :nothing #notified when repo updates
-end
-
-if !node[:kibana_authentication_proxy].attribute?(:cookie_secret)
-  require 'securerandom'
-  random_string = SecureRandom.hex
-  node.set[:kibana_authentication_proxy][:cookie_secret] = random_string
-end
-
-template "#{node[:kibana_authentication_proxy][:install_path]}/config.js" do
-  variables(node[:kibana_authentication_proxy])
-end
