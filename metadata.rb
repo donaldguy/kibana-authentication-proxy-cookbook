@@ -10,3 +10,6 @@ depends 'chef-sugar'
 depends 'git'
 depends 'nodejs', '~> 2.1.0'
 depends 'authbind', '~> 0.1.8'
+
+depends 'build-essential'
+depends 'pleaserun'
