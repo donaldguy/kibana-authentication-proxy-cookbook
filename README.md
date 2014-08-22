@@ -1,6 +1,7 @@
-# kibana-authentication-proxy-cookbook
+# kibana-authentication-proxy Cookbook <br>(Upstart Edition)
 
-Installs [fangli/kibana-authentication-proxy](https://github.com/fangli/kibana-authentication-proxy). In the future should include runit scripts
+Installs [fangli/kibana-authentication-proxy](https://github.com/fangli/kibana-authentication-proxy). And gets it running under upstart with
+a service file `/etc/init/kibana.conf`
 
 ## Supported Platforms
 
@@ -46,12 +47,24 @@ If using Google OAuth, you need to set-up the callback URL. It will look like `h
     <td><tt>master</tt></td>
   </tr>
   <tr>
+    <td><tt>[:kibana_authentication_proxy][:user]</tt></td>
+    <td>String</td>
+    <td>User to run the node proxy app as. Will create if necessary</td>
+    <td><tt>kibana</tt></td>
+  <tr>
     <td><tt>[:kibana-authentication-proxy][:kibana_git_ref]</tt></td>
     <td>String</td>
     <td>the kibana-authentication-proxy README currently "optionally" suggests
      updating the submoduled kibana beyond its saved state. If you'd like to
     do that, set this to 'master' (or whatever ref you prefer)</td>
-    <td><tt>nil</tt></td>
+    <td><tt>:from_proxy_repo</tt></td>
+  </tr>
+  <tr>
+    <td><tt>[:kibana-authentication-proxy][:use_authbind]</tt></td>
+    <td>Boolean</td>
+    <td>If you want to run on a low-port (e.g. 80), but don't want to run node
+    as root (and you shouldn't), set this to true to install and use [authbind](http://en.wikipedia.org/wiki/Authbind)</td>
+    <td><tt>false</tt></td>
   </tr>
 </table>
 

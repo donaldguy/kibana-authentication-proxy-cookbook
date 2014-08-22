@@ -19,11 +19,6 @@ default[:kibana_authentication_proxy][:kibana_git_ref] = :from_proxy_repo
 default[:kibana_authentication_proxy][:user] = 'kibana'
 
 #<
-# Generally, its nice for a proces to run itself :D
-#>
-default[:kibana_authentication_proxy][:use_runit] = true
-
-#<
 # We may want to bind a privilledged port (i.e. 80). We probably don't want
 # to run as a privilledged user or set a cability on the node processs as
 # a whole. "LD_PRELOAD to the rescue". Setting this to true will grant the
